@@ -51,7 +51,8 @@ Unless otherwise noted, all code on this page is released under the GPL-3 licens
 
 <h3>Computation and application of generalized linear mixed model derivatives using lme4</h3>
 <ul>
-  <li><a href="https://arxiv.org/abs/2011.10414">Working paper</a>.</li>
+  <li>Manuscript published in <a href="https://doi.org/10.1007/s11336-022-09840-2">Psychometrika</a>.</li>
+  <li>Replication materials <a href="https://osf.io/58ruw/">hosted on OSF</a>.</li>
 </ul>  
 
 <h3>Score-based tests for explaining heterogeneity in linear mixed models</h3>
