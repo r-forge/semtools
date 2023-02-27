@@ -49,6 +49,12 @@ Unless otherwise noted, all code on this page is released under the GPL-3 licens
 </ul>
 -->
 
+<h3>Self-normalized, score-based tests of mixed models</h3>
+<ul>
+  <li>Code for <a href="replication-selfnorm.R">application section</a>.</li>
+  <li>Code for <a href="sim-selfnorm.R">simulation section</a>.</li>
+</ul>  
+
 <h3>Computation and application of generalized linear mixed model derivatives using lme4</h3>
 <ul>
   <li>Manuscript published in <a href="https://doi.org/10.1007/s11336-022-09840-2">Psychometrika</a>.</li>
