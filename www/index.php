@@ -49,15 +49,16 @@ Unless otherwise noted, all code on this page is released under the GPL-3 licens
 </ul>
 -->
 
-<h3>Self-normalized, score-based tests of mixed models</h3>
+<h3>Self-normalized, score-based tests of parameter heterogeneity in mixed models</h3>
 <ul>
+  <li>Manuscript published in <a href="https://doi.org/10.1007/978-3-031-56318-8_15">Dependent Data in Social Sciences Research, 377-395</a>.</li>
   <li>Code for <a href="replication-selfnorm.R">application section</a>.</li>
   <li>Code for <a href="sim-selfnorm.R">simulation section</a>.</li>
 </ul>  
 
 <h3>Computation and application of generalized linear mixed model derivatives using lme4</h3>
 <ul>
-  <li>Manuscript published in <a href="https://doi.org/10.1007/s11336-022-09840-2">Psychometrika</a>.</li>
+  <li>Manuscript published in <a href="https://doi.org/10.1007/s11336-022-09840-2">Psychometrika 87, 1173-1193</a>.</li>
   <li>Replication materials <a href="https://osf.io/58ruw/">hosted on OSF</a>.</li>
 </ul>  
 
