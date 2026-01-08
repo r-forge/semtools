@@ -49,6 +49,12 @@ Unless otherwise noted, all code on this page is released under the GPL-3 licens
 </ul>
 -->
 
+<h3>Identification and scaling of latent variables in ordinal factor analysis</h3>
+<ul>
+  <li>Manuscript in press at Psychometrika.</li>
+  <li>Code for reproducing all results <a href="mwf_code.zip">(zip).</a></li>
+</ul>
+
 <h3>Self-normalized, score-based tests of parameter heterogeneity in mixed models</h3>
 <ul>
   <li>Manuscript published in <a href="https://doi.org/10.1007/978-3-031-56318-8_15">Dependent Data in Social Sciences Research, 377-395</a>.</li>
