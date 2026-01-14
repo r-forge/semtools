@@ -53,7 +53,7 @@ Unless otherwise noted, all code on this page is released under the GPL-3 licens
 <ul>
   <li>Manuscript in press at Psychometrika.</li>
   <li>Code for reproducing all results. <a href="mwf_code.zip">(zip)</a></li>
-  <li>Code for apply integer constraints to other lavaan models. <a href="integer_constraint.R">integer_constraint.R</a></li>
+  <li>R function for applying integer constraints to other lavaan models. <a href="integer_constraint.R">integer_constraint.R</a></li>
 </ul>
 
 <h3>Self-normalized, score-based tests of parameter heterogeneity in mixed models</h3>
