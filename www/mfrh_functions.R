@@ -7,9 +7,6 @@
 ################
 
 ## extracting dic & friends from models
-## note fillres() and dic_wrapper() can be extended to
-## also obtain waic or looic metrics; these metrics
-## are also returned by fitMeasures().
 fillres <- function(blavmod, res, i, iter){
   dics <- dic_wrapper(blavmod)
 
@@ -68,6 +65,23 @@ dic_wrapper <- function(fit){
 ### IRT Example
 ################
 
+# Replacement for rstan::extract() that takes a subset of iterations.
+extract_wrapper <- function(fit, iters = NULL, ...) {
+  draws <- extract(fit, ...)
+  if(is.null(iters)) {
+    return(draws)
+  } else {
+    f <- function(x, iters) {
+      if(is.matrix(x)) {
+        x[iters,]
+      } else {
+        x[iters]
+      }
+    }
+    lapply(draws, f, iters = iters)
+  }
+}
+
 # Replacement for rstan::get_posterior_means() that returns object with same
 # structure as rstan::extract()
 # stan_fit: A fitted Stan model
@@ -87,15 +101,43 @@ better_posterior_means <- function(stan_fit) {
 }
 
 
-# Function to obtain marginal likelihoods with parallel processing. 
+# Functions to obtain conditional and marginal likelihoods with parallel processing. 
 # stan_fit: Fitted Stan model
 # data_list: Data list used in fitting model
+# CFUN: Function to calculate pointwise conditional likelihood. This is application specific.
 # MFUN: Function to calculate marginal likelihood for cluster at a node 
 #   location. This is application specific.
+# draws: Sampled parameters
 # resid_name: Name of residual in Stan program to integrate out
 # sd_name: Name of SD for residual in Stan program
 # n_nodes: Number of adaptive quadrature nodes to use
+# iters: MCMC iterations for which to compute the likelihood (NULL implies all iterations)
 # best_only: Whether to evaluate marginal likelihood only at posterior means
+cll <- function(stan_fit = NULL, data_list, CFUN, draws = NULL, ll_par = NULL,
+                iters = NULL, best_only = FALSE) {
+
+  if(is.null(draws)) {
+    draws <- extract_wrapper(stan_fit, iters)
+  }
+
+  n_iter <- length(draws$lp__)
+
+  post_means <- better_posterior_means(stan_fit)
+  best_ll <- CFUN(1, data_list = data_list, draws = post_means)
+
+  if(best_only) {
+    return(best_ll)
+  } else {
+    if(is.null(ll_par)) {
+      ll <- t(sapply(1:n_iter, CFUN, data_list = data_list, draws = draws))
+    } else {
+      ll <- draws[[ll_par]]
+    }
+    return(list(ll = ll, best_ll = best_ll))
+  }
+
+}
+
 mll_parallel <- function(stan_fit, data_list, MFUN, resid_name, sd_name, n_nodes,
                          best_only = FALSE) {
   
@@ -159,14 +201,21 @@ mll_parallel <- function(stan_fit, data_list, MFUN, resid_name, sd_name, n_nodes
 }
 
 
-# Function to calculate likelihood for a cluster for an adaptive quad node
-# specific to the IRT example. Similar functions would be written for other
-# applications and passed to mll_parallel().
+# Functions to calculate conditional likelihood for all observations, and marginal
+# likelihood for a cluster at an adaptive quad node specific to the IRT example.
+# Similar functions would be written for other applications and passed to mll_parallel().
 # node: node location
 # r: index for cluster
 # iter: mcmc iteration
 # data_list: data used to fit Stan model
 # draws: mcmc draws from fitted Stan model
+f_conditional <- function(iter, data_list, draws) {
+  theta_vec <- draws$theta[iter, data_list$jj]
+  delta_vec <- draws$delta[iter, data_list$ii]
+  p <- boot::inv.logit(theta_vec - delta_vec)
+  dbinom(data_list$y, 1, p, log = TRUE)
+}
+
 f_marginal <- function(node, r, iter, data_list, draws) {
   y <- data_list$y[data_list$jj == r]
   theta_fix <- draws$theta_fix[iter, r]
